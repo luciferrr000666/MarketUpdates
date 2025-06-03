@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Market Heatmap Dashboard</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6edf3;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      padding: 20px;
+      text-align: center;
+      background-color: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .summary-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: #21262d;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+      min-width: 150px;
+      text-align: center;
+    }
+    .widgets-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 20px;
+    }
+    .widget-box {
+      flex: 1 1 45%;
+      margin: 10px;
+      min-width: 300px;
+      max-width: 48%;
+      height: 600px;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      background-color: #161b22;
+      overflow: hidden;
+    }
+    .widget-title {
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #21262d;
+      border-bottom: 1px solid #30363d;
+    }
+    .tradingview-widget-container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Real-Time Global Stock Heatmaps</h1>
+    <p>Comparative visual analytics for Indian, US, and Forex markets</p>
+  </div>
+
+  <div class="widgets-container">
+    <!-- Indian Market Heatmap -->
+    <div class="widget-box">
+      <div class="widget-title">Indian Market - SENSEX Heatmap</div>
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+            <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+        {
+          "exchanges": [],
+          "dataSource": "SENSEX",
+          "grouping": "sector",
+          "blockSize": "market_cap_basic",
+          "blockColor": "change",
+          "locale": "en",
+          "symbolUrl": "",
+          "colorTheme": "dark",
+          "hasTopBar": false,
+          "isDataSetEnabled": false,
+          "isZoomEnabled": true,
+          "hasSymbolTooltip": true,
+          "isMonoSize": false,
+          "width": "100%",
+          "height": "100%"
+        }
+        </script>
+      </div>
+    </div>
+
+    <!-- US Market Heatmap -->
+    <div class="widget-box">
+      <div class="widget-title">US Market - AllUSA Heatmap</div>
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+            <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+        {
+          "exchanges": [],
+          "dataSource": "AllUSA",
+          "grouping": "sector",
+          "blockSize": "market_cap_basic",
+          "blockColor": "change",
+          "locale": "en",
+          "symbolUrl": "",
+          "colorTheme": "dark",
+          "hasTopBar": false,
+          "isDataSetEnabled": false,
+          "isZoomEnabled": true,
+          "hasSymbolTooltip": true,
+          "isMonoSize": false,
+          "width": "100%",
+          "height": "100%"
+        }
+        </script>
+      </div>
+    </div>
+
+    <!-- Forex Heatmap -->
+    <div class="widget-box" style="flex: 1 1 100%; max-width: 100%; height: 450px;">
+      <div class="widget-title">Forex Market - Currency Strength Heatmap</div>
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+            <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
+        {
+          "width": "100%",
+          "height": 400,
+          "currencies": ["EUR", "USD", "JPY", "GBP", "CHF", "AUD", "CAD", "NZD", "CNY", "INR"],
+          "isTransparent": false,
+          "colorTheme": "dark",
+          "locale": "en",
+          "backgroundColor": "#1D222D"
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchIndex(symbol, elementId) {
+      try {
+        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1d&interval=1m`);
+        const data = await res.json();
+        const lastClose = data.chart.result[0].meta.regularMarketPrice;
+        document.getElementById(elementId).innerText = lastClose.toFixed(2);
+      } catch (err) {
+        document.getElementById(elementId).innerText = "Unavailable";
+      }
+    }
+
+    fetchIndex("^NSEI", "nifty-value");
+    fetchIndex("^IXIC", "nasdaq-value");
+    fetchIndex("^GSPC", "sp500-value");
+  </script>
+</body>
+</html>

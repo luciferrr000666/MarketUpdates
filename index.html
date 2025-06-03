@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Financial Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+    }
+    header {
+      background-color: #161b22;
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #30363d;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #21262d;
+      border-bottom: 1px solid #30363d;
+    }
+    nav button {
+      background: none;
+      color: #e6edf3;
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    nav button:hover, nav button.active {
+      background-color: #30363d;
+    }
+    .content {
+      height: 100vh;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 120px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unified Financial Analytics Platform</h1>
+  </header>
+  <nav>
+    <button id="btn-heatmap" class="active" onclick="switchView('heatmap')">📊 Heatmap Dashboard</button>
+    <button id="btn-news" onclick="switchView('news')">📰 Market News Dashboard</button>
+  </nav>
+  <div class="content">
+    <iframe id="dashboardFrame" src="heatmap_dashboard.html"></iframe>
+  </div>
+
+  <script>
+    function switchView(view) {
+      const iframe = document.getElementById("dashboardFrame");
+      iframe.src = view === 'heatmap' ? 'heatmap_dashboard.html' : 'market_news_dashboard.html';
+
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`btn-${view}`).classList.add('active');
+    }
+  </script>
+</body>
+</html>
